@@ -82,9 +82,13 @@ docstring <- function(fun, default_title = "Title not detected"){
         unlink(package_dir, recursive = TRUE)
     }
 
+    # Create a fake environment to pass to package.skeleton
+    # I don't really want it picking up the global environment
+    # and there is more than what we need (and possible a name conflict)
+    # within this environment so if we create a new environment we control
+    # what gets created using package.skeleton.
     j <- new.env(parent = emptyenv())
     j$a <- 0
-    
     suppressMessages(package.skeleton(name = package_name, 
                                       path = temp_dir, 
                                       environment = j)
