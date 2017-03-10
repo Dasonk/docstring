@@ -4,6 +4,7 @@
 #' 
 #' @return  character - the roxygen strings if there is a docstring, error if not
 #' @importFrom utils capture.output
+#' @noRd
 docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
     # Right now this extracts any roxygen style comments
