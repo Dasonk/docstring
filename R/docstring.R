@@ -46,9 +46,11 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' in the docstring itself. NOT YET IMPLEMENTED
 #' @param warnings logical Whether you want warning messages displayed
 #' in the console. NOT YET IMPLEMENTED.
-#' @export
+#' 
 #' @import roxygen2
 #' @import utils
+#' 
+#' @export
 docstring <- function(fun, default_title = "Title not detected", warnings = TRUE){
     
     fun_name <- as.character(substitute(fun))
@@ -84,10 +86,24 @@ docstring <- function(fun, default_title = "Title not detected", warnings = TRUE
     
     roxygenize(package_dir, "rd")
     
-    generated_help_file <- file.path(package_dir, "man", paste0(fun_name, ".Rd"))
-    to_display <- tools::Rd2HTML(generated_help_file, tempfile(fileext = ".html"))
+    generated_Rd_file <- file.path(package_dir, "man", paste0(fun_name, ".Rd"))
     
-    browseURL(to_display)
+    
+    ####################################
+    # Everything before here should be the same regardless of display type
+    ####################################
+    
+    isRStudio <- Sys.getenv("RSTUDIO") == "1"
+    
+    if(isRStudio){
+        rstudioapi::previewRd(generated_Rd_file)
+        Sys.sleep(1)
+    }else{
+        
+        html_to_display <- tools::Rd2HTML(generated_Rd_file, tempfile(fileext = ".html"))
+        browseURL(html_to_display)
+    }
+    
     
     return(invisible())
 }

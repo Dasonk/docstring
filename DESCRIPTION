@@ -7,10 +7,10 @@ Authors@R: person("Dason", "Kurkiewicz", role = c("aut", "cre"), email =
         "dasonk@gmail.com")
 Author: Dason Kurkiewicz [aut, cre]
 Maintainer: Dason Kurkiewicz <dasonk@gmail.com>
-Depends: R
 Imports: roxygen2,
     utils
-Suggests: devtools
+Suggests: devtools, 
+    rstudioapi
 BugReports: https://github.com/dasonk/docstring/issues?state=open
 Description: Provides the ability to display something analagous to
     Python's docstrings within R.  By allowing the user to document
