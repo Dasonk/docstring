@@ -1,5 +1,5 @@
 
-#' @import utils
+#' @importFrom utils capture.output
 docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
     # Right now this extracts any roxygen style comments
@@ -44,14 +44,14 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' @param fun The function that has the docstring you would like to display
 #' @param default_title The title you would like to display if no title is detected
 #' in the docstring itself. NOT YET IMPLEMENTED
-#' @param warnings logical Whether you want warning messages displayed
-#' in the console. NOT YET IMPLEMENTED.
 #' 
-#' @import roxygen2
-#' @import utils
+#' @importFrom roxygen2 roxygenize
+#' @importFrom utils capture.output
+#' @importFrom utils package.skeleton
+#' @importFrom utils browseURL
 #' 
 #' @export
-docstring <- function(fun, default_title = "Title not detected", warnings = TRUE){
+docstring <- function(fun, default_title = "Title not detected"){
     
     fun_name <- as.character(substitute(fun))
     
@@ -66,14 +66,20 @@ docstring <- function(fun, default_title = "Title not detected", warnings = TRUE
     # the files and folders we create
     
     temp_dir <- tempdir()
-    package_dir <- file.path(temp_dir, "TempPackage")
+    package_name <- "TempPackage"
+    package_dir <- file.path(temp_dir, package_name)
     if(file.exists(package_dir)){
         unlink(package_dir, recursive = TRUE)
     }
 
     j <- new.env(parent = emptyenv())
     j$a <- 0
-    package.skeleton(name = "TempPackage", path = temp_dir, environment = j)
+    
+    suppressMessages(package.skeleton(name = package_name, 
+                                      path = temp_dir, 
+                                      environment = j)
+                     )
+    
     on.exit(unlink(package_dir, recursive = TRUE)) # created w/ package.skeleton
     
     
@@ -84,7 +90,12 @@ docstring <- function(fun, default_title = "Title not detected", warnings = TRUE
     temp_file <- file.path(package_dir, "R", paste0(fun_name, ".R"))
     cat(roxy_text, file = temp_file)
     
-    roxygenize(package_dir, "rd")
+
+    # roxygen uses cat to display the "Writing your_function.Rd" messages so
+    # I figured capturing the output would be 'safer' than using sink and
+    # diverting things. Oh well.
+    output <- capture.output(suppressWarnings(suppressMessages(roxygenize(package_dir, "rd"))))
+
     
     generated_Rd_file <- file.path(package_dir, "man", paste0(fun_name, ".Rd"))
     
@@ -97,8 +108,11 @@ docstring <- function(fun, default_title = "Title not detected", warnings = TRUE
     
     if(isRStudio){
         rstudioapi::previewRd(generated_Rd_file)
+        # Workaround since the file doesn't get displayed if we don't give
+        # Rstudio time to do it's thing before the directory get's deleted.
         Sys.sleep(1)
     }else{
+        # Only supporting html for the time being apparently
         
         html_to_display <- tools::Rd2HTML(generated_Rd_file, tempfile(fileext = ".html"))
         browseURL(html_to_display)

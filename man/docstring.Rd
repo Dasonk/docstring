@@ -4,16 +4,13 @@
 \alias{docstring}
 \title{Display a docstring}
 \usage{
-docstring(fun, default_title = "Title not detected", warnings = TRUE)
+docstring(fun, default_title = "Title not detected")
 }
 \arguments{
 \item{fun}{The function that has the docstring you would like to display}
 
 \item{default_title}{The title you would like to display if no title is detected
 in the docstring itself. NOT YET IMPLEMENTED}
-
-\item{warnings}{logical Whether you want warning messages displayed
-in the console. NOT YET IMPLEMENTED.}
 }
 \description{
 Display a docstring using R's built in help file viewer.
