@@ -2,6 +2,12 @@
 #' @import utils
 docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
+    # Right now this extracts any roxygen style comments
+    # and they don't need to be consecutive.  I'm not sure
+    # if I want to change that or not. Oh well.
+    # The code then removes the leading spaces because our intent is
+    # to put this above a generated function to be valid roxygen
+    # style comments
     values <- capture.output(print(fun))
     roxy_ids <- grepl("^[[:space:]]*#\'", values)
     roxy_strings <- values[roxy_ids]
@@ -11,8 +17,21 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
     
     funargs <- capture.output(args(fun))
+    # capture.output(args(fun)) doesn't show the function definition
+    # instead just giving something of the form:
+    #
+    # function(x, y, ...)
+    # NULL
+    #
+    # but what we want in our file is something that looks like:
+    #
+    # funname <- function(x, y, ...)
+    # NULL
+    #
+    # So let's add the function definition back in
     funargs[1] <- paste(funname, "<-", funargs[1])
     
+    # Combine our extracted roxygen and the function definition
     roxytext <- paste(c(roxy, funargs), collapse = "\n")
     return(roxytext)
 }
@@ -24,8 +43,9 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' 
 #' @param fun The function that has the docstring you would like to display
 #' @param default_title The title you would like to display if no title is detected
-#' in the docstring itself
-#' @param warnings logical Whether you want warning messages displayed in the console
+#' in the docstring itself. NOT YET IMPLEMENTED
+#' @param warnings logical Whether you want warning messages displayed
+#' in the console. NOT YET IMPLEMENTED.
 #' @export
 #' @import roxygen2
 #' @import utils
