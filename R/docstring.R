@@ -32,8 +32,8 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     funargs[1] <- paste(funname, "<-", funargs[1])
     
     # Combine our extracted roxygen and the function definition
-    roxytext <- paste(c(roxy, funargs), collapse = "\n")
-    return(roxytext)
+    roxy_text <- paste(c(roxy, funargs), collapse = "\n")
+    return(roxy_text)
 }
 
 
@@ -51,10 +51,10 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' @import utils
 docstring <- function(fun, default_title = "Title not detected", warnings = TRUE){
     
-    funname <- as.character(substitute(fun))
+    fun_name <- as.character(substitute(fun))
     
     # Extract the roxygen style comments from the function's code
-    roxytext <- docstring_to_roxygen(fun, funname = funname)
+    roxy_text <- docstring_to_roxygen(fun, funname = fun_name)
     
     # The general approach is to create a shell of a package
     # and create an R file in the R directory in which we write
@@ -63,37 +63,31 @@ docstring <- function(fun, default_title = "Title not detected", warnings = TRUE
     # view the resulting help file. Afterwards we remove
     # the files and folders we create
     
-    
-    tdir <- tempdir()
-    packagedir <- file.path(tdir, "TempPackage")
-    if(file.exists(packagedir)){
-        unlink(packagedir, recursive = TRUE)
+    temp_dir <- tempdir()
+    package_dir <- file.path(temp_dir, "TempPackage")
+    if(file.exists(package_dir)){
+        unlink(package_dir, recursive = TRUE)
     }
-    on.exit(unlink(packagedir, recursive = TRUE))
-    
-    # We need 
-    
+
     j <- new.env(parent = emptyenv())
     j$a <- 0
-    package.skeleton(name = "TempPackage", path = tdir, environment = j)
+    package.skeleton(name = "TempPackage", path = temp_dir, environment = j)
+    on.exit(unlink(package_dir, recursive = TRUE)) # created w/ package.skeleton
     
-    if(!file.exists(file.path(packagedir, "R"))){
-        dir.create(file.path(packagedir, "R"))
+    
+    if(!file.exists(file.path(package_dir, "R"))){
+        dir.create(file.path(package_dir, "R"))
     } 
     
-    tfile <- file.path(packagedir, "R", paste0(funname, ".R"))
-    # tfile <- tempfile(pattern = funname, 
-    #                   fileext = ".R", 
-    #                   tmpdir = paste0(packagedir, "/R"))
-    cat(roxytext, file = tfile)
+    temp_file <- file.path(package_dir, "R", paste0(fun_name, ".R"))
+    cat(roxy_text, file = temp_file)
     
-    roxygenize(packagedir, "rd")
+    roxygenize(package_dir, "rd")
     
-    file <- file.path(packagedir, "man", paste0(funname, ".Rd"))
+    generated_help_file <- file.path(package_dir, "man", paste0(fun_name, ".Rd"))
+    to_display <- tools::Rd2HTML(generated_help_file, tempfile(fileext = ".html"))
     
-    temp <- tools::Rd2HTML(file, tempfile(fileext = ".html"))
-    
-    browseURL(temp)
+    browseURL(to_display)
     
     return(invisible())
 }
