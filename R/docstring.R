@@ -1,4 +1,8 @@
-
+#' Attempts to pull out the docstring and turn them into valid
+#' roxygen style comments formated in a way that it should
+#' be able to be written directly to a file
+#' 
+#' @return  character - the roxygen strings if there is a docstring, error if not
 #' @importFrom utils capture.output
 docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
@@ -10,6 +14,11 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     # style comments
     values <- capture.output(print(fun))
     roxy_ids <- grepl("^[[:space:]]*#\'", values)
+    
+    if(!any(roxy_ids)){
+        stop("This function doesn't have any detectable docstring")
+    }
+    
     roxy_strings <- values[roxy_ids]
     roxy_strings <- gsub("^[[:space:]]*", "", roxy_strings)
     
@@ -56,6 +65,7 @@ docstring <- function(fun, default_title = "Title not detected"){
     fun_name <- as.character(substitute(fun))
     
     # Extract the roxygen style comments from the function's code
+    # gives error if no docstring detected
     roxy_text <- docstring_to_roxygen(fun, funname = fun_name)
     
     # The general approach is to create a shell of a package
