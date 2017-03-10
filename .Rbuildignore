@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.travis\.yml$
+^/\.gitattributes$
+^CONTRIBUTING\.md$
+^NEWS$
+^README\.Rmd$

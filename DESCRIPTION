@@ -1,0 +1,24 @@
+Package: docstring
+Type: Package
+Title: docstring
+Version: 0.1.0
+Date: 2017-03-10
+Authors@R: person("Dason", "Kurkiewicz", role = c("aut", "cre"), email =
+        "dasonk@gmail.com")
+Author: Dason Kurkiewicz [aut, cre]
+Maintainer: Dason Kurkiewicz <dasonk@gmail.com>
+Depends: R (>= 3.0.2)
+Imports: roxygen2,
+    utils
+Suggests: devtools
+BugReports: https://github.com/dasonk/docstring/issues?state=open
+Description: Provides the ability to display something analagous to
+    Python's docstrings within R.  By allowing the user to document
+    their functions as comments at the beginning of their function
+    without requiring putting the function into a package we allow
+    more users to easily provide documentation for their functions.
+    The documentation can be viewed using an accessor function but
+    displays just like any other R help files.
+License: GPL-2
+URL: https://github.com/dasonk/docstring
+RoxygenNote: 6.0.1
