@@ -37,7 +37,7 @@ square <- function(x){
 docstring(square)
 ```
 
-![Square](inst/square.png)
+![Square](docs/images/square.png)
 
 
 
