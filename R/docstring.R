@@ -5,7 +5,8 @@
 #' @return  character - the roxygen strings if there is a docstring, error if not
 #' @importFrom utils capture.output
 #' @noRd
-docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)), error = TRUE){
+docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)), 
+                                 default_title = "Title not detected", error = TRUE){
     
     # Right now this extracts any roxygen style comments
     # and they don't need to be consecutive.  I'm not sure
@@ -27,6 +28,16 @@ docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)), 
     
     roxy_strings <- values[roxy_ids]
     roxy_strings <- gsub("^[[:space:]]*", "", roxy_strings)
+    
+    blanks <- grepl("^[[:space:]]*#\'[[:space:]]*$", values)
+    keywords <- grepl("^[[:space:]]*#\'[[:space:]]*@", values)
+    
+    # If there are any blanks or keywords then leave it be.
+    # otherwise stick the default title at the beginning
+    if(!any(blanks) & !any(keywords)){
+        roxy_strings <- c(paste("#'", default_title), "#' ", roxy_strings)
+    }
+    
     
     roxy <- paste0(roxy_strings, collapse = "\n")
     
@@ -86,7 +97,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     
     # Extract the roxygen style comments from the function's code
     # gives error if no docstring detected
-    roxy_text <- docstring_to_roxygen(fun, fun_name = fun_name)
+    roxy_text <- docstring_to_roxygen(fun, fun_name = fun_name, default_title = default_title)
     
     # The general approach is to create a shell of a package
     # and create an R file in the R directory in which we write

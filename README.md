@@ -20,6 +20,7 @@ their pre-existing documentation outside of the function and they will be set.
 
 ## Examples
 
+
 ```r
 library(docstring)
 
@@ -35,9 +36,13 @@ square <- function(x){
 }
 
 docstring(square)
+# or
+?square
 ```
 
 ![Square](docs/images/square.png)
+
+### R Studio support
 
 If you are running R through RStudio there is support for displaying the
 docstring within the RStudio help pane directly.  This is enabled by default. It
@@ -49,8 +54,37 @@ is a race condition going on under the hood so sometimes it doesn't show. I'm wo
 
 ![Square RStudio](docs/images/square_rstudio.png)
 
-There is also support for using `?` to access the docstring.  This will only
-work for functions that 1) have a docstring contained in them and 2) are living
+There is also support for using `?` to access the docstring.  
+
+![Square question](docs/images/square_question.png)
+
+### Single Chunks
+
+One does not need to adhere completely to the roxygen style for documentation.
+One notable exception is when the beginning comments are just a single chunk of
+text.  In these cases it is assumed that the text is supposed to be interpreted
+as the "Description" section of the help file and the generated help page adheres
+to that assumption.
+
+![lorem](docs/images/chunk_lorem.png)
+
+Currently if there are any roxygen style comments that are "blank"
+
+```r
+#' This is a roxygen style comment
+#' and the following line is considered "blank"
+#'
+#' because the leading #' doesn't count
+```
+
+or if any lines start with "keywords" (such as @param, @export, ...)
+then the automation to give it the default title is not applied as it is
+assumed that the user is adhering to the roxygen standard.
+
+### ? support
+
+A little bit more information on `?` support. 
+This will only work for functions that 1) have a docstring contained in them and 2) are living
 in the global namespace.  If it doesn't meet those requirements then `?` will 
 fall back to the "typical" way that `?` would get interpreted.
 
@@ -78,9 +112,8 @@ then `?lm` will show the docstring for this function. If you wanted to view
 the help for the 'typical' `lm` you would need to either use `help` directly or
 specify the namespace when using `?` (i.e. `?stats::lm`)
 
-Here is an example of the simple case where it works (shown in RStudio):
 
-![Square question](docs/images/square_question.png)
+
 
 
 ## Known Issues
