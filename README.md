@@ -39,10 +39,23 @@ docstring(square)
 
 ![Square](docs/images/square.png)
 
+If you are running R through RStudio there is support for displaying the
+docstring within the RStudio help pane directly.  This is enabled by default. It
+should detect that you're running RStudio and unless you choose the `rstudio_pane=FALSE`
+within `docstring` or set `options("docstring_rstudio_help_pane" = FALSE)` (which
+will disable the help pane support and instead display the help in a web browser)
+the docstring will show in the help pane. This isn't 100% reliable as I believe there
+is a race condition going on under the hood so sometimes it doesn't show. I'm working on that.
+
+![Square RStudio](docs/images/square_rstudio.png)
+
 There is also support for using `?` to access the docstring.  This will only
 work for functions that 1) have a docstring contained in them and 2) are living
 in the global namespace.  If it doesn't meet those requirements then `?` will 
 fall back to the "typical" way that `?` would get interpreted.
+
+![Square question](docs/images/square_question.png)
+
 
 
 
