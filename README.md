@@ -9,10 +9,10 @@ more users to easily provide documentation for their functions.
 The documentation can be viewed using an accessor function but
 displays just like any other R help files.
 
-The user will need to be familiar with roxygen style comments (via the roxygen2 package)
-to fully utilize the package.  Eventually I want to detect basic comments and
-allow the user to just use those as the documentation without requiring
-the use of the roxygen keywords at least for simple cases.  Ideally this will
+The user will need to be familiar with roxygen style comments (via the [roxygen2 package](https://cran.r-project.org/package=roxygen2))
+to fully utilize the package.  
+
+Ideally this will
 allow users not yet comfortable with package creation to still provide
 documentation for their functions. If they use the roxygen style comments when it
 is time to convert their work into a package all they will need to do is move
@@ -77,14 +77,15 @@ Currently if there are any roxygen style comments that are "blank"
 ```
 
 or if any lines start with "keywords" (such as @param, @export, ...)
-then the automation to give it the default title is not applied as it is
-assumed that the user is adhering to the roxygen standard.
+then the automation to give it the default title and put the single chunk
+in the "Description" section is not applied as it is
+assumed that the user is adhering to the full roxygen standard.
 
 ### ? support
 
 A little bit more information on `?` support. 
 This will only work for functions that 1) have a docstring contained in them and 2) are living
-in the global namespace.  If it doesn't meet those requirements then `?` will 
+in the global environment.  If it doesn't meet those requirements then `?` will 
 fall back to the "typical" way that `?` would get interpreted.
 
 For example if I defined
