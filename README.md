@@ -40,7 +40,7 @@ docstring(square)
 ?square
 ```
 
-![Square](docs/images/square.png)
+![Square](docs/images/square_html.png)
 
 ### R Studio support
 
