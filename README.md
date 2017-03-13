@@ -49,8 +49,7 @@ docstring within the RStudio help pane directly.  This is enabled by default. It
 should detect that you're running RStudio and unless you choose the `rstudio_pane=FALSE`
 within `docstring` or set `options("docstring_rstudio_help_pane" = FALSE)` (which
 will disable the help pane support and instead display the help in a web browser)
-the docstring will show in the help pane. This isn't 100% reliable as I believe there
-is a race condition going on under the hood so sometimes it doesn't show. I'm working on that.
+the docstring will show in the help pane.
 
 ![Square RStudio](docs/images/square_rstudio.png)
 
