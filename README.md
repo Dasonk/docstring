@@ -39,6 +39,11 @@ docstring(square)
 
 ![Square](docs/images/square.png)
 
+There is also support for using `?` to access the docstring.  This will only
+work for functions that 1) have a docstring contained in them and 2) are living
+in the global namespace.  If it doesn't meet those requirements then `?` will 
+fall back to the "typical" way that `?` would get interpreted.
+
 
 
 ## Installation
