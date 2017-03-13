@@ -125,7 +125,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
                                       environment = j)
                      )
     
-    on.exit(unlink(package_dir, recursive = TRUE)) # created w/ package.skeleton
+    #on.exit(unlink(package_dir, recursive = TRUE)) # created w/ package.skeleton
     
     
     if(!file.exists(file.path(package_dir, "R"))){
@@ -158,7 +158,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
         rstudioapi::previewRd(generated_Rd_file)
         # Workaround since the file doesn't get displayed if we don't give
         # Rstudio time to do it's thing before the directory get's deleted.
-        Sys.sleep(1)
+        #Sys.sleep(1)
     }else{
         # Only supporting html for the time being apparently
         html_to_display <- tools::Rd2HTML(generated_Rd_file, tempfile(fileext = ".html"))
