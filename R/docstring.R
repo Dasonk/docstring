@@ -5,7 +5,7 @@
 #' @return  character - the roxygen strings if there is a docstring, error if not
 #' @importFrom utils capture.output
 #' @noRd
-docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
+docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)), error = TRUE){
     
     # Right now this extracts any roxygen style comments
     # and they don't need to be consecutive.  I'm not sure
@@ -17,7 +17,12 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     roxy_ids <- grepl("^[[:space:]]*#\'", values)
     
     if(!any(roxy_ids)){
-        stop("This function doesn't have any detectable docstring")
+        if(error){
+            stop("This function doesn't have any detectable docstring")  
+        }else{
+            return(NA)
+        }
+
     }
     
     roxy_strings <- values[roxy_ids]
@@ -27,6 +32,7 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     
     
     funargs <- capture.output(args(fun))
+    
     # capture.output(args(fun)) doesn't show the function definition
     # instead just giving something of the form:
     #
@@ -35,15 +41,20 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
     #
     # but what we want in our file is something that looks like:
     #
-    # funname <- function(x, y, ...)
+    # fun_name <- function(x, y, ...)
     # NULL
     #
     # So let's add the function definition back in
-    funargs[1] <- paste(funname, "<-", funargs[1])
+    funargs[1] <- paste(fun_name, "<-", funargs[1])
     
     # Combine our extracted roxygen and the function definition
     roxy_text <- paste(c(roxy, funargs), collapse = "\n")
     return(roxy_text)
+}
+
+has_docstring <- function(fun, fun_name = as.character(substitute(fun))){
+    out <- docstring_to_roxygen(fun, fun_name, error = FALSE)
+    return(!is.na(out))
 }
 
 
@@ -52,6 +63,11 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' Display a docstring using R's built in help file viewer.
 #' 
 #' @param fun The function that has the docstring you would like to display
+#' @param fun_name The name of the function.
+#' @param rstudio_pane logical. If running in RStudio do you want the help
+#' to show in the help pane? This defaults to TRUE but can be explicitly set
+#' using options("docstring_rstudio_help_pane" = TRUE) or 
+#' options("docstring_rstudio_help_pane" = FALSE)
 #' @param default_title The title you would like to display if no title is detected
 #' in the docstring itself. NOT YET IMPLEMENTED
 #' 
@@ -59,15 +75,18 @@ docstring_to_roxygen <- function(fun, funname = as.character(substitute(fun))){
 #' @importFrom utils capture.output
 #' @importFrom utils package.skeleton
 #' @importFrom utils browseURL
+#' @aliases ?
 #' 
 #' @export
-docstring <- function(fun, default_title = "Title not detected"){
+docstring <- function(fun, fun_name = as.character(substitute(fun)), 
+                      rstudio_pane = getOption("docstring_rstudio_help_pane"),
+                      default_title = "Title not detected"){
     
-    fun_name <- as.character(substitute(fun))
+    
     
     # Extract the roxygen style comments from the function's code
     # gives error if no docstring detected
-    roxy_text <- docstring_to_roxygen(fun, funname = fun_name)
+    roxy_text <- docstring_to_roxygen(fun, fun_name = fun_name)
     
     # The general approach is to create a shell of a package
     # and create an R file in the R directory in which we write
@@ -119,7 +138,10 @@ docstring <- function(fun, default_title = "Title not detected"){
     # Everything before here should be the same regardless of display type
     ####################################
     
-    isRStudio <- Sys.getenv("RSTUDIO") == "1"
+    rstudio_pane <- ifelse(is.null(rstudio_pane), TRUE, rstudio_pane)
+       
+    # Require the user to be running Rstudio AND the option to be true
+    isRStudio <- (Sys.getenv("RSTUDIO") == "1") && rstudio_pane
     
     if(isRStudio){
         rstudioapi::previewRd(generated_Rd_file)
@@ -128,11 +150,58 @@ docstring <- function(fun, default_title = "Title not detected"){
         Sys.sleep(1)
     }else{
         # Only supporting html for the time being apparently
-        
         html_to_display <- tools::Rd2HTML(generated_Rd_file, tempfile(fileext = ".html"))
         browseURL(html_to_display)
     }
     
     
     return(invisible())
+}
+
+#' @export
+`?` <- function (e1, e2)
+{
+    call <- match.call()
+    
+    original <- function() {
+        # call the original ? function
+        call[[1]] <- quote(utils::`?`)
+        return(eval(call, parent.frame(2)))
+    }
+    
+    # We don't handle requests with type
+    if (!missing(e2)) {
+        return(original())
+    }
+    
+    # We only handle function calls where the object
+    # exists in the global environment AND has a docstring.
+    # otherwise pass it on...
+    
+    
+    topicExpr1 <- substitute(e1)
+    fun_name <- as.character(topicExpr1)
+    
+    # This is basically just checking if the object is defined
+    in_global <- exists(fun_name, .GlobalEnv)
+    if(in_global){
+        fun <- get(fun_name, .GlobalEnv)
+        ename <- environmentName(environment(fun))
+        # Functions from packages also show up as existing
+        # in .GlobalEnv but their environment name is
+        # not R_GlobalEnv so this is a way to check that
+        # we are dealing with a user defined function.
+        defined_in_global <- ename == "R_GlobalEnv"
+        if(defined_in_global){
+            has_ds <- has_docstring(fun, fun_name)
+            if(has_ds){
+                do.call(docstring, list(fun = fun, fun_name = fun_name))
+                return(invisible(NULL))                
+            }
+        }
+    }
+    
+    # All else failed - use original help function
+    return(original())
+
 }

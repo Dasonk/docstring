@@ -2,12 +2,22 @@
 % Please edit documentation in R/docstring.R
 \name{docstring}
 \alias{docstring}
+\alias{?}
 \title{Display a docstring}
 \usage{
-docstring(fun, default_title = "Title not detected")
+docstring(fun, fun_name = as.character(substitute(fun)),
+  rstudio_pane = getOption("docstring_rstudio_help_pane"),
+  default_title = "Title not detected")
 }
 \arguments{
 \item{fun}{The function that has the docstring you would like to display}
+
+\item{fun_name}{The name of the function.}
+
+\item{rstudio_pane}{logical. If running in RStudio do you want the help
+to show in the help pane? This defaults to TRUE but can be explicitly set
+using options("docstring_rstudio_help_pane" = TRUE) or 
+options("docstring_rstudio_help_pane" = FALSE)}
 
 \item{default_title}{The title you would like to display if no title is detected
 in the docstring itself. NOT YET IMPLEMENTED}
