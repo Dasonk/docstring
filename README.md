@@ -54,9 +54,49 @@ work for functions that 1) have a docstring contained in them and 2) are living
 in the global namespace.  If it doesn't meet those requirements then `?` will 
 fall back to the "typical" way that `?` would get interpreted.
 
+For example if I defined
+
+```r
+lm <- function(){
+    print("lm")
+}
+```
+
+this would not meet the first condition and even though it meets the second
+`?lm` would show the help file for `stats::lm` instead of saying there is no help
+available.  If you included some docstring like so
+
+```r
+lm <- function(){
+    #' lm docstring
+    #'
+    #' More docstring for lm
+    print("lm")
+}
+```
+then `?lm` will show the docstring for this function. If you wanted to view
+the help for the 'typical' `lm` you would need to either use `help` directly or
+specify the namespace when using `?` (i.e. `?stats::lm`)
+
+Here is an example of the simple case where it works (shown in RStudio):
+
 ![Square question](docs/images/square_question.png)
 
 
+## Known Issues
+
+ - sos
+    - Both sos and docstring overwrite `?`.  In docstring `?` becomes
+    a wrapper for `docstring` and in sos `?` calls `findFn`. The
+    order which you load sos and docstring determines which version of `?` gets
+    called if you aren't explicit about the namespace.
+    - Really I'm not too worried about this since I don't see both packages
+    being used in conjuction too often.  But I see both packages as providing
+    useful functionality for an `interactive()` session and not being used
+    within a script often.  Because of this hopefully the user will be able
+    to sort out any issues that may arise from the conflicts that can happen
+    by having more than one package mask a function.
+    
 
 
 ## Installation
