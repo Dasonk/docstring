@@ -170,19 +170,16 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
 }
 
 #' @export
-`?` <- function (e1, e2)
+`?` <- function(x,y) UseMethod("?", x)
+#' @export
+`?.default` <- utils::`?`
+
+#' @export
+`?.function` <- function (e1, e2)
 {
-    call <- match.call()
-
-    original <- function() {
-        # call the original ? function
-        call[[1]] <- quote(utils::`?`)
-        return(eval(call, parent.frame(2)))
-    }
-
     # We don't handle requests with type
     if (!missing(e2)) {
-        return(original())
+        NextMethod()
     }
 
     # We only handle function calls where the object
@@ -194,13 +191,15 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     fun_name <- as.character(topicExpr1)
 
     # This is basically just checking if the object is defined
+    # If not found, NULL
+    # has_docstring(NULL) is FALSE
     fun <- get0(fun_name, .GlobalEnv, inherits=FALSE)
-    if(!is.null(fun) && has_docstring(fun, fun_name)){
+    if(has_docstring(fun, fun_name)){
         docstring(fun = fun, fun_name = fun_name)
         return(invisible(NULL))
     }
 
     # All else failed - use original help function
-    return(original())
+    NextMethod()
 
 }

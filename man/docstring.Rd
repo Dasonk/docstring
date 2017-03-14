@@ -16,7 +16,7 @@ docstring(fun, fun_name = as.character(substitute(fun)),
 
 \item{rstudio_pane}{logical. If running in RStudio do you want the help
 to show in the help pane? This defaults to TRUE but can be explicitly set
-using options("docstring_rstudio_help_pane" = TRUE) or 
+using options("docstring_rstudio_help_pane" = TRUE) or
 options("docstring_rstudio_help_pane" = FALSE)}
 
 \item{default_title}{The title you would like to display if no title is detected
