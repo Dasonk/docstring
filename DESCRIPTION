@@ -1,7 +1,7 @@
 Package: docstring
 Type: Package
 Title: docstring
-Version: 0.1.0
+Version: 0.2.0
 Date: 2017-03-10
 Authors@R: person("Dason", "Kurkiewicz", role = c("aut", "cre"), email =
         "dasonk@gmail.com")
