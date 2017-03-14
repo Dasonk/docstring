@@ -194,8 +194,10 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     fun_name <- as.character(topicExpr1)
 
     # This is basically just checking if the object is defined
+    # If not found, NULL
+    # has_docstring(NULL) is FALSE
     fun <- get0(fun_name, .GlobalEnv, inherits=FALSE)
-    if(!is.null(fun) && has_docstring(fun, fun_name)){
+    if(has_docstring(fun, fun_name)){
         docstring(fun = fun, fun_name = fun_name)
         return(invisible(NULL))
     }
