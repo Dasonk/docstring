@@ -60,10 +60,10 @@ There is also support for using `?` to access the docstring.
 ### Single Chunks
 
 One does not need to adhere completely to the roxygen style for documentation.
-One notable exception is when the beginning comments are just a single chunk of
-text.  In these cases it is assumed that the text is supposed to be interpreted
-as the "Description" section of the help file and the generated help page adheres
-to that assumption.
+One notable exception is when the docstring is just a single chunk of
+text with no blank lines or @keywords.  In these cases it is assumed that
+the text is supposed to be interpreted as the "Description" section of the 
+help file and the generated help page adheres to that assumption.
 
 ![lorem](docs/images/chunk_lorem.png)
 
@@ -84,9 +84,13 @@ assumed that the user is adhering to the full roxygen standard.
 ### ? support
 
 A little bit more information on `?` support. 
-This will only work for functions that 1) have a docstring contained in them and 2) are living
-in the global environment.  If it doesn't meet those requirements then `?` will 
-fall back to the "typical" way that `?` would get interpreted.
+This will only work for functions that:
+
+ 1) have a docstring contained in them and 
+ 2) are living in the global environment.  
+
+If it doesn't meet those requirements then `?` will fall back to the "typical" 
+way that `?` would get interpreted.
 
 For example if I defined
 
