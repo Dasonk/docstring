@@ -12,7 +12,8 @@ Imports: roxygen2,
 Suggests: devtools, 
     rstudioapi,
     knitr,
-    rmarkdown
+    rmarkdown,
+    tools
 BugReports: https://github.com/dasonk/docstring/issues?state=open
 Description: Provides the ability to display something analagous to
     Python's docstrings within R.  By allowing the user to document
