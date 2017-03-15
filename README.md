@@ -133,7 +133,21 @@ specify the namespace when using `?` (i.e. `?stats::lm`)
     within a script often.  Because of this hopefully the user will be able
     to sort out any issues that may arise from the conflicts that can happen
     by having more than one package mask a function.
-    
+ - devtools
+    - devtools (actually pkgload which is used by devtools) creates a drop-in 
+    replacement for `?` and `help` when using `load_all()`. The `?` and `help`
+    replacements are only attached after `load_all()` is called. So if you use
+    devtools without using `load_all()` you'll never see a conflict with 
+    `docstring`.  However if you do use `load_all()` after you've loaded
+    `docstring` then you might need to use the `docstring()` function to access
+    your help files.
+    - One possible workaround would be to include a "devtools_shims" in `search()`
+    if the user doesn't want to have the devtools version loaded. By doing this
+    the check that pkgload does to see if it should add `?` and `help` functionality
+    will come back as `FALSE`.  This would probably need to be added into docstring
+    as a package option that defaults to not overwritting the devtools stuff.
+    It's a headache all around but I shouldn't create even more unexpected behavior
+    without the user specifying that it's what they want to do.
 
 
 ## Installation
