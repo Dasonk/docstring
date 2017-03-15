@@ -153,16 +153,27 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
 
     # Require the user to be running Rstudio AND the option to be true
     isRStudio <- (Sys.getenv("RSTUDIO") == "1") && rstudio_pane
-
     if(isRStudio){
         rstudioapi::previewRd(generated_Rd_file)
         # Workaround since the file doesn't get displayed if we don't give
         # Rstudio time to do it's thing before the directory get's deleted.
         #Sys.sleep(1)
-    }else{
-        # Only supporting html for the time being apparently
+        return(invisible())
+    }
+    
+    type <- getOption("help_type")
+    if(is.null(type)){
+        type <- "text"
+    }
+    
+    if(type == "html"){
         html_to_display <- tools::Rd2HTML(generated_Rd_file, tempfile(fileext = ".html"))
         browseURL(html_to_display)
+    }else if(type == "text"){
+        txt_to_display <- tools::Rd2txt(generated_Rd_file, tempfile(fileext = ".txt"))
+        file.show(txt_to_display)
+    }else{
+        stop("Only help_type of html or text are supported in docstring")
     }
 
 
