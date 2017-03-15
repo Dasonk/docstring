@@ -117,8 +117,14 @@ the help for the 'typical' `lm` you would need to either use `help` directly or
 specify the namespace when using `?` (i.e. `?stats::lm`)
 
 
+### help_type
 
+Currently "html" and "text" are supported help types. The help_type "pdf" is
+not supported.  If RStudio is running then the RStudio help pane will also be
+used regardless of what the help_type is set to unless options are specified to 
+not use the help pane.
 
+![Square text](docs/images/square_text.png)
 
 ## Known Issues
 
