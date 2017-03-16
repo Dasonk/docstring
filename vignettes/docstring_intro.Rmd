@@ -199,7 +199,7 @@ mypaste <- function(x, y = "!"){
   #'   It is completely irrelevant to this function though.
   #' }
   #' 
-  #' @reference Tufte, E. R. (2001). The visual display of 
+  #' @references Tufte, E. R. (2001). The visual display of 
   #' quantitative information. Cheshire, Conn: Graphics Press.
   #' @examples
   #' mypaste(1, 3)
