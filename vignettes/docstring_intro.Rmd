@@ -10,7 +10,7 @@ vignette: >
 ---
 
 
-The docstring package is an R package that provides the ability to 
+The docstring package is a package for R that provides the ability to 
 display something analagous to
 Python's docstrings within R.  By allowing the user to document
 their functions as comments at the beginning of their function
