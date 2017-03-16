@@ -74,7 +74,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<p>The docstring package is an R package that provides the ability to display something analagous to Python’s docstrings within R. By allowing the user to document their functions as comments at the beginning of their function without requiring putting the function into a package we allow more users to easily provide documentation for their functions. The documentation can be viewed using an accessor function but displays just like any other R help files.</p>
+<p>The docstring package is a package for R that provides the ability to display something analagous to Python’s docstrings within R. By allowing the user to document their functions as comments at the beginning of their function without requiring putting the function into a package we allow more users to easily provide documentation for their functions. The documentation can be viewed using an accessor function but displays just like any other R help files.</p>
 <p>The user will need to be familiar with roxygen style comments (via the <a href="https://cran.r-project.org/package=roxygen2">roxygen2 package</a>) to fully utilize the package.</p>
 <p>In this vignette we will walk through a few examples to give you an introduction to what the package does and some simple examples of how to format your documentation to be used with docstring.</p>
 <p>At it’s most basic documentation can just be a sentence or two describing what a function does.</p>
@@ -90,18 +90,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## }</code></pre>
 <p>However for longer functions that can be incovenient. The built in help system in R is the ideal way to view help for functions. By default we can’t use the help system to view the documentation we wrote in the <code>square</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?square</code></pre></div>
-<pre><code>## Title not detected
-## 
-## Description:
-## 
-##      Computes the square of the input
-## 
-## Usage:
-## 
-##      square(x)
-## </code></pre>
+<pre><code>## No documentation for 'square' in specified packages and libraries:
+## you could try '??square'</code></pre>
 <p>However, using the docstring package will allow us to do just that for functions that have a corresponding docstring. For functions that don’t have a docstring it will fall back to the ‘typical’ functionality of <code>?</code>. Note that this vignette has been configured to display the help documentation as output in the console.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(docstring)</code></pre></div>
+<pre><code>## 
+## Attaching package: 'docstring'</code></pre>
+<pre><code>## The following object is masked from 'package:utils':
+## 
+##     ?</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?square <span class="co"># Below is the generated help file:</span></code></pre></div>
 <pre><code>Title not detected
 
