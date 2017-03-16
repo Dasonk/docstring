@@ -2,6 +2,7 @@
 
 export("?")
 export(docstring)
+export(fix_conflicts)
 importFrom(roxygen2,roxygenize)
 importFrom(utils,browseURL)
 importFrom(utils,capture.output)

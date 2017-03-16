@@ -239,3 +239,44 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     return(original())
 
 }
+
+#' Fix `?` conflicts
+#' 
+#' If you run into conflicts where ?your_docstring_function doesn't
+#' produce any output it may be that another package has a version
+#' of `?` that comes up earlier in the search path. This can happen
+#' if you load another package after docstring that has the conflict.
+#' If you are sure that you want the docstring version of `?` to be
+#' the one that is referenced without having to resort to something like
+#' docstring::`?`(your_docstring_function) then you can run this function
+#' to place a copy of docstring's version of ? earlier in the search path.
+#' 
+#' @section Known Conflicts:
+#' Right now the conflicts I know of are: 1) The sos package and 2) if you
+#' use the `load_all()` function in devtools/pkgload it will insert its own
+#' version of ? into the search path but only the first time load_all() is
+#' used.
+#' 
+#' @examples 
+#' \dontrun{
+#' library(docstring)
+#' square <- function(x){
+#'  #' square a number
+#'  x^2
+#' }
+#' ?square # should load the docstring
+#' library(sos)
+#' ?square # won't load the docstring
+#' fix_conflicts()
+#' ?square # should now load the docstring
+#' }
+#' 
+#' @export
+fix_conflicts <- function(){
+    if("docstring_shims" %in% search()){
+        detach("docstring_shims")
+    }
+    
+    docstring_shims <- list("?" = docstring::`?`)
+    attach(docstring_shims)
+}
