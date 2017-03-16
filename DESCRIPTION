@@ -1,12 +1,13 @@
 Package: docstring
 Type: Package
-Title: docstring
-Version: 0.2.0
-Date: 2017-03-10
-Authors@R: as.person(c(
-        "Dason Kurkiewicz <dasonk@gmail.com> [aut, cre]",
-        "Neal Fultz <nfultz@gmail.com> [ctb]"
-    ))
+Title: Provides Docstring Capabilities to R Functions
+Version: 1.0.0
+Date: 2017-03-16
+Authors@R: c(person("Dason", "Kurkiewicz", email = "dasonk@gmail.com", role = c("aut", "cre")),
+             person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"))
+Author: Dason Kurkiewicz [aut, cre], 
+    Neal Fultz [ctb]
+Maintainer: Dason Kurkiewicz <dasonk@gmail.com>
 Imports: roxygen2,
     utils
 Suggests: devtools, 
