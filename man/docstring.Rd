@@ -20,7 +20,7 @@ using options("docstring_rstudio_help_pane" = TRUE) or
 options("docstring_rstudio_help_pane" = FALSE)}
 
 \item{default_title}{The title you would like to display if no title is detected
-in the docstring itself. NOT YET IMPLEMENTED}
+in the docstring itself.}
 }
 \description{
 Display a docstring using R's built in help file viewer.

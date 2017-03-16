@@ -80,7 +80,7 @@ has_docstring <- function(fun, fun_name = as.character(substitute(fun))){
 #' using options("docstring_rstudio_help_pane" = TRUE) or
 #' options("docstring_rstudio_help_pane" = FALSE)
 #' @param default_title The title you would like to display if no title is detected
-#' in the docstring itself. NOT YET IMPLEMENTED
+#' in the docstring itself.
 #'
 #' @importFrom roxygen2 roxygenize
 #' @importFrom utils capture.output
@@ -95,8 +95,11 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
 
 
 
-    # Extract the roxygen style comments from the function's code
-    # gives error if no docstring detected
+    # Extract the roxygen style comments from the function's code.
+    # Gives error if no docstring detected. The error will only
+    # show up if running docstring directly. If using ? to access the docstring
+    # has_docstring (which doesn't create and error) is used before 
+    # calling docstring so we shouldn't get an error in that situation.
     roxy_text <- docstring_to_roxygen(fun, fun_name = fun_name, default_title = default_title)
 
     # The general approach is to create a shell of a package
@@ -125,9 +128,18 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
                                       environment = j)
                      )
 
+    # Cleaning up like this caused a race condition. RStudio help wasn't
+    # showing up half the time. We aren't being perfect citizens by not
+    # cleaning up but we do clean up from previous runs at the beginning
+    # of the function so only one copy of crud will be on the system
+    # at any given time.  Unless the temp directory changes. In which
+    # case more can be on the system but oh well it's temp and will get
+    # deleted at some point anyways.
     #on.exit(unlink(package_dir, recursive = TRUE)) # created w/ package.skeleton
 
 
+    # package.skeleton doesn't create an R folder if there isn't any
+    # code passed in
     if(!file.exists(file.path(package_dir, "R"))){
         dir.create(file.path(package_dir, "R"))
     }
@@ -163,6 +175,11 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     
     type <- getOption("help_type")
     if(is.null(type)){
+        # Assuming text if it's null because I think that's the safest
+        # to assume. It shouldn't cause any issues on terminals and in
+        # a GUI environment it won't cause issues either. html on the
+        # other hand can cause some issues if those capabilities aren't
+        # present.
         type <- "text"
     }
     
@@ -186,7 +203,12 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     call <- match.call()
 
     original <- function() {
-        # call the original ? function
+        # Recreates the call but uses utils::`?`
+        # So if we decide that docstring isn't the
+        # way to go then we can still treat the input
+        # like it would be treated if the docstring
+        # package wasn't loaded.
+        # TODO: Possibly try to play nice with devtools/sos?
         call[[1]] <- quote(utils::`?`)
         return(eval(call, parent.frame(2)))
     }
@@ -196,14 +218,14 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
         return(original())
     }
 
-    # We only handle function calls where the object
-    # exists in the global environment AND has a docstring.
-    # otherwise pass it on...
-
 
     topicExpr1 <- substitute(e1)
     fun_name <- as.character(topicExpr1)
-
+    
+    
+    # We only handle function calls where the object
+    # exists in the global environment AND has a docstring.
+    # otherwise pass it on...
     # This is basically just checking if the object is defined
     # If not found, NULL
     # has_docstring(NULL) is FALSE
@@ -213,7 +235,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
         return(invisible(NULL))
     }
 
-    # All else failed - use original help function
+    # docstring isn't appropriate - use original help function
     return(original())
 
 }
