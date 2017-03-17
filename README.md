@@ -1,5 +1,7 @@
 # docstring
 
+[![Build Status](https://travis-ci.org/Dasonk/docstring.svg?branch=master)](https://travis-ci.org/Dasonk/docstring)
+
 The docstring package is an R package that provides the ability to 
 display something analagous to
 Python's docstrings within R.  By allowing the user to document
