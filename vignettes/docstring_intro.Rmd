@@ -136,7 +136,7 @@ If you were you would most likely put your documentation above the function as
 that is the style that is typically required in package building via `roxygen2`.
 Due to that I'll only describe a subset of the keywords that are available to
 the user but if you are interested in more on how elaborate you can make your
-documentation I would suggest reading the [Generating Rd files](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html) vignette
+documentation I would suggest reading the [Generating Rd files](https://cran.r-project.org/package=roxygen2/vignettes/rd.html) vignette
 for the roxygen2 package.
 
 Some of the other useful keywords that I can forsee users using with docstring are:
