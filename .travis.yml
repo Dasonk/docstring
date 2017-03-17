@@ -5,3 +5,6 @@ r:
     - oldrel
     - release
     - devel
+os:
+    - linux
+    - osx
