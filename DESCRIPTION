@@ -16,13 +16,13 @@ Suggests: devtools,
     rmarkdown,
     tools
 BugReports: https://github.com/dasonk/docstring/issues?state=open
-Description: Provides the ability to display something analagous to
+Description: Provides the ability to display something analogous to
     Python's docstrings within R.  By allowing the user to document
     their functions as comments at the beginning of their function
     without requiring putting the function into a package we allow
     more users to easily provide documentation for their functions.
-    The documentation can be viewed using an accessor function but
-    displays just like any other R help files.
+    The documentation can be viewed just like any other help files
+    for functions provided by packages as well.
 License: GPL-2
 URL: https://github.com/dasonk/docstring
 RoxygenNote: 6.0.1
