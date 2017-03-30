@@ -1,6 +1,6 @@
 # docstring
 
-[![Build Status](https://travis-ci.org/Dasonk/docstring.svg?branch=master)](https://travis-ci.org/Dasonk/docstring)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-last-release/docstring)](https://cran.r-project.org/package=docstring) [![Build Status](https://travis-ci.org/Dasonk/docstring.svg?branch=master)](https://travis-ci.org/Dasonk/docstring) 
 
 The docstring package is an R package that provides the ability to 
 display something analagous to
@@ -160,7 +160,13 @@ not use the help pane.
 
 ## Installation
 
-The package is not yet on CRAN but is available to download using devtools.
+The package is now hosting on CRAN [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-last-release/docstring)](https://cran.r-project.org/package=docstring)
+
+It can easily be installed from CRAN by using the following command
+
+```r
+install.packages("docstring")
+```
 
 You can also download the dev version via [zip ball](https://github.com/dasonk/docstring/zipball/master) or [tar ball](https://github.com/dasonk/docstring/tarball/master), decompress and run `R CMD INSTALL` on it, or use the **devtools** package to install the development version:
 
