@@ -86,7 +86,7 @@ has_docstring <- function(fun, fun_name = as.character(substitute(fun))){
 #' rstudio_pane = getOption("docstring_rstudio_help_pane"),
 #' default_title = "Title not detected")
 #' 
-#' ?fun
+#' ##?fun 
 #' @importFrom roxygen2 roxygenize
 #' @importFrom utils capture.output
 #' @importFrom utils package.skeleton
