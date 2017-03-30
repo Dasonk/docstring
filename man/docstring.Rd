@@ -5,9 +5,11 @@
 \alias{?}
 \title{Display a docstring}
 \usage{
-docstring(fun, fun_name = as.character(substitute(fun)),
-  rstudio_pane = getOption("docstring_rstudio_help_pane"),
-  default_title = "Title not detected")
+docstring(fun, fun_name = as.character(substitute(fun)), 
+rstudio_pane = getOption("docstring_rstudio_help_pane"),
+default_title = "Title not detected")
+
+?fun
 }
 \arguments{
 \item{fun}{The function that has the docstring you would like to display}

@@ -82,6 +82,11 @@ has_docstring <- function(fun, fun_name = as.character(substitute(fun))){
 #' @param default_title The title you would like to display if no title is detected
 #' in the docstring itself.
 #'
+#' @usage docstring(fun, fun_name = as.character(substitute(fun)), 
+#' rstudio_pane = getOption("docstring_rstudio_help_pane"),
+#' default_title = "Title not detected")
+#' 
+#' ?fun
 #' @importFrom roxygen2 roxygenize
 #' @importFrom utils capture.output
 #' @importFrom utils package.skeleton
