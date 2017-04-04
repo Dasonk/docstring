@@ -5,7 +5,7 @@
 #' @return  character - the roxygen strings if there is a docstring, error if not
 #' @importFrom utils capture.output
 #' @noRd
-docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)),
+read_docstring <- function(fun, fun_name = as.character(substitute(fun)),
                                  default_title = "Title not detected", error = TRUE){
 
     # Right now this extracts any roxygen style comments
@@ -64,7 +64,7 @@ docstring_to_roxygen <- function(fun, fun_name = as.character(substitute(fun)),
 }
 
 has_docstring <- function(fun, fun_name = as.character(substitute(fun))){
-    out <- docstring_to_roxygen(fun, fun_name, error = FALSE)
+    out <- read_docstring(fun, fun_name, error = FALSE)
     return(!is.na(out))
 }
 
@@ -159,7 +159,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     # show up if running docstring directly. If using ? to access the docstring
     # has_docstring (which doesn't create and error) is used before 
     # calling docstring so we shouldn't get an error in that situation.
-    roxy_text <- docstring_to_roxygen(fun, fun_name = fun_name, default_title = default_title)
+    roxy_text <- read_docstring(fun, fun_name = fun_name, default_title = default_title)
 
     # The general approach is to create a shell of a package
     # and create an R file in the R directory in which we write
