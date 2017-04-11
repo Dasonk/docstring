@@ -1,6 +1,8 @@
 # docstring
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-last-release/docstring)](https://cran.r-project.org/package=docstring) [![Build Status](https://travis-ci.org/Dasonk/docstring.svg?branch=master)](https://travis-ci.org/Dasonk/docstring) 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-last-release/docstring)](https://cran.r-project.org/package=docstring) 
+[![Build Status](https://travis-ci.org/Dasonk/docstring.svg?branch=master)](https://travis-ci.org/Dasonk/docstring) 
+[![Downloads](http://cranlogs.r-pkg.org/badges/docstring)](https://cran.r-project.org/package=docstring)
 
 The docstring package is an R package that provides the ability to 
 display something analagous to
