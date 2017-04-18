@@ -169,6 +169,16 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     return(invisible())
 }
 
+
+original_help <- utils::`?`
+
+.onAttach <- function(lib, pkg) {
+  parent <- environment(.onAttach)
+  unlockBinding('original_help', parent)
+  original_help <<- get('?', parent.env(parent.env(.GlobalEnv)))  
+  lockBinding('original_help', parent)
+}
+
 #' @export
 `?` <- function (e1, e2)
 {
@@ -176,7 +186,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
 
     original <- function() {
         # call the original ? function
-        call[[1]] <- quote(utils::`?`)
+        call[[1]] <- quote(docstring:::original_help)
         return(eval(call, parent.frame(2)))
     }
 
