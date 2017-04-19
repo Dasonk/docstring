@@ -175,7 +175,7 @@ original_help <- utils::`?`
 .onAttach <- function(lib, pkg) {
   parent <- environment(.onAttach)
   unlockBinding('original_help', parent)
-  original_help <<- get('?', parent.env(parent.env(.GlobalEnv)))  
+  original_help <<- get0('?', parent.env(parent.env(.GlobalEnv)))  
   lockBinding('original_help', parent)
 }
 
