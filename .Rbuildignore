@@ -4,5 +4,7 @@
 ^/\.gitattributes$
 ^CONTRIBUTING\.md$
 ^NEWS$
-^README\.Rmd$
+^README\.R*md$
 ^docs/*
+^.git
+^.git/*

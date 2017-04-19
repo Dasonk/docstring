@@ -3,3 +3,4 @@ docstring.Rproj
 .Rhistory
 .RData
 .Ruserdata
+inst/doc

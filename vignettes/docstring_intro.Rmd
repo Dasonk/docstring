@@ -1,0 +1,217 @@
+---
+title: "Introduction to docstring"
+author: "Dason Kurkiewicz"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to docstring}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+The docstring package is a package for R that provides the ability to 
+display something analagous to
+Python's docstrings within R.  By allowing the user to document
+their functions as comments at the beginning of their function
+without requiring putting the function into a package we allow
+more users to easily provide documentation for their functions.
+The documentation can be viewed using an accessor function but
+displays just like any other R help files.
+
+The user will need to be familiar with roxygen style comments (via the [roxygen2 package](https://cran.r-project.org/package=roxygen2))
+to fully utilize the package.
+
+In this vignette we will walk through a few examples to give you an introduction
+to what the package does and some simple examples of how to format your
+documentation to be used with docstring.
+
+
+```{r, include=FALSE}
+options(help_type="text")
+
+# A pager that outputs to the console
+console_pager <- function(x, ...){
+    input <- readLines(x)
+    # Had some issues with _ getting displayed
+    # in the output console output which
+    # messed up rendering in the created html vignette
+    # So remove that before outputting.
+    input <- gsub("_", "", input)
+    cat(paste(input,collapse="\n"), "\n")}
+options(pager=console_pager)
+options(docstring_rstudio_help_pane = FALSE)
+```
+
+At it's most basic documentation can just be a sentence or two describing
+what a function does.
+
+```{r}
+square <- function(x){
+    #' Computes the square of the input
+    return(x^2)
+}
+```
+
+The comment at the beginning serves as our documentation of what the function does.
+If we wanted to view the documentation we could print the entire function
+in which case we would be able to see the documentation in the source.
+
+```{r, echo=TRUE}
+square
+```
+
+However for longer functions that can be incovenient. The built in help system in
+R is the ideal way to view help for functions.  By default we can't use the 
+help system to view the documentation we wrote in the `square` function.
+
+```{r}
+?square
+```
+
+However, using the docstring package will allow us to do just that for functions
+that have a corresponding docstring.  For functions that don't have a docstring
+it will fall back to the 'typical' functionality of `?`. Note that this vignette
+has been configured to display the help documentation as output in the console.
+
+```{r}
+library(docstring)
+```
+```{r, comment=NA}
+?square # Below is the generated help file:
+```
+
+## More complex docstring
+
+When the docstring is just a single chunk of text you'll notice that the
+generated help file puts the text in the "Description" section and has
+"Title Not Detected". This is a convenience feature but the documentation comments
+can (and should in most cases) follow the standards set by the roxygen2 package.
+So this means that the first chunk of comments before a blank line is taken to
+be the title, the second chunk is taken to be the Description section, and the
+rest goes in the "Details" section.  You can have finer control over these things
+by using keywords but let's look at an example in action
+
+```{r, comment=NA}
+test <- function(){
+    #' This is my title line
+    #'
+    #' All of this text goes
+    #' in the Description section
+    #'
+    #' This part goes in the Details!
+    return()
+}
+
+?test
+```
+
+You'll notice that the "usage" portion gets generated automatically.
+
+### Using keywords
+
+The standard set in roxygen2 allows the use of keywords to specify different
+sections and the corresponding documentation.  For example if you want to
+provide documentation explaining what one of the input parameters means you
+could include a line that starts with `@param parameter_name` which will 
+create an Arguments section and place the documentation about the input parameters
+there.
+
+```{r, comment=NA}
+square <- function(x){
+    #' Squares a number
+    #'
+    #' Provides the square of the input
+    #' @param x The value to be squared
+    return(x^2)
+}
+
+?square
+```
+
+You can see that the "Arguments" section gets automatically generated using
+the documentation you wrote on the line that started with `@param`.  When using
+docstring it isn't expected that you are in the process of building a package.
+If you were you would most likely put your documentation above the function as
+that is the style that is typically required in package building via `roxygen2`.
+Due to that I'll only describe a subset of the keywords that are available to
+the user but if you are interested in more on how elaborate you can make your
+documentation I would suggest reading the [Generating Rd files](https://cran.r-project.org/package=roxygen2/vignettes/rd.html) vignette
+for the roxygen2 package.
+
+Some of the other useful keywords that I can forsee users using with docstring are:
+
+ - `@return description` to describe the output that a function creates.
+ - `@title`, `@description`, `@details` are available if you want to be more
+ explicit in the sections. This also allows you to have a description section
+ longer than one paragraph if you explicitly use the description keyword.
+ - `@note` Creates a note section
+ - `@section SectionTitle:` You can create your own sections using the section
+ keyword.  Following `@section` must be the section title in sentence case and
+ must be finished with a colon. Subsections do not have their own keyword but 
+ can be added using the Rd `\subsection{}` command.
+ - `@usage` If you want to have more control over the usage section you can
+ either overwrite the generated usage or add to it by using this keyword
+ - `@references` If you want to add references to your documentation. This is
+ important (and appreciated) especially when you are writing a function that
+ implements an algorithm in a journal article.  Having a reference to the source
+ is vital in those situations.
+ - `@examples` which will create an examples section in the documentation. Using
+ docstring there isn't a nice way to run the examples like you can using the
+ `example()` function but they will still show up in the documentation which
+ is sometimes the most important part. Users can still copy/paste if they desire.
+ - `@export`, `@import`, `@importFrom` These are keywords that are highly useful
+ for and only really make sense in the context of package creation.  docstring
+ isn't meant to be used for full packages so you wouldn't expect me to comment
+ on these keywords. However, docstring is a nice tool to use in the time before
+ package creation so it is understandable that if somebody thought their
+ code will turn into a package someday that they might want to get a jump start
+ on *all* of the documentation (including the namespace directives).  There is
+ nothing stopping a user from using these keywords.  They won't do anything
+ when used with docstring though.
+ 
+ So now to illustrate all of this I will present an example function that uses
+ **all** of these keywords.  The function is pointless and the documentation is
+ gibberish but it should allow you to see how to format the docstring using
+ the keywords and what the corresponding help file will look like.
+
+```{r, comment=NA}
+mypaste <- function(x, y = "!"){
+  #' Paste two items
+  #' 
+  #' @description This function pastes two items
+  #' together.  
+  #'
+  #' By using the description tag you'll notice that I
+  #' can have multiple paragraphs in the description section
+  #' 
+  #' @param x character. The first item to paste
+  #' @param y character. The second item to paste Defaults to "!" but
+  #' "?" would be pretty great too
+  #' @usage mypaste(x, y)
+  #' @return The inputs pasted together as a character string.
+  #' @details The inputs can be anything that can be input into
+  #' the paste function.
+  #' @note And here is a note. Isn't it nice?
+  #' @section I Must Warn You:
+  #' The reference provided is a good read.
+  #' \subsection{Other warning}{
+  #'   It is completely irrelevant to this function though.
+  #' }
+  #' 
+  #' @references Tufte, E. R. (2001). The visual display of 
+  #' quantitative information. Cheshire, Conn: Graphics Press.
+  #' @examples
+  #' mypaste(1, 3)
+  #' mypaste("hey", "you")
+  #' mypaste("single param")
+  #' @export
+  #' @importFrom base paste
+
+  return(paste(x, y))
+}
+
+?mypaste
+```
+
+
