@@ -9,6 +9,11 @@ os:
     - linux
     - osx
 matrix:
-    exclude:
+    fast_finish: true
+    allow_failures:
+    -   r: oldrel
+        os: osx
+    -   r: release
+        os: osx
     -   r: devel
         os: osx
