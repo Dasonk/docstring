@@ -10,7 +10,9 @@ Python's docstrings within R.  By allowing the user to document
 their functions as comments at the beginning of their function
 without requiring putting the function into a package we allow
 more users to easily provide documentation for their functions.
-The documentation can be viewed using an accessor function but
+The documentation can be viewed either using an accessor function
+(i.e. `docstring(your_function)`) or just like you would for
+any other function (i.e. `?your_function`) and it should
 displays just like any other R help files.
 
 The user will need to be familiar with roxygen style comments (via the [roxygen2 package](https://cran.r-project.org/package=roxygen2))
