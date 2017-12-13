@@ -66,7 +66,7 @@ There is also support for using `?` to access the docstring.
 ### Single Chunks
 
 One does not need to adhere completely to the roxygen style for documentation.
-One notable exception is when the docstring is just a single chunk of
+One notable example is when the docstring is just a single chunk of
 text with no blank lines or @keywords.  In these cases it is assumed that
 the text is supposed to be interpreted as the "Description" section of the 
 help file and the generated help page adheres to that assumption.
