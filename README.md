@@ -9,7 +9,7 @@ display something analagous to
 Python's docstrings within R.  By allowing the user to document
 their functions as comments at the beginning of their function
 without requiring putting the function into a package we allow
-more users to easily provide documentation for their functions.
+more users to easily provide documentation viewable through the native help system within R.
 The documentation can be viewed either using an accessor function
 (i.e. `docstring(your_function)`) or just like you would for
 any other function (i.e. `?your_function`) and it should
