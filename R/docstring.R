@@ -139,7 +139,7 @@ docstring <- function(fun, fun_name = as.character(substitute(fun)),
     # roxygen uses cat to display the "Writing your_function.Rd" messages so
     # I figured capturing the output would be 'safer' than using sink and
     # diverting things. Oh well.
-    output <- capture.output(suppressWarnings(suppressMessages(roxygenize(package_dir, "rd"))))
+    output <- capture.output(suppressWarnings(suppressMessages(roxygenize(package_dir, "rd", load = "source"))))
 
 
     generated_Rd_file <- file.path(package_dir, "man", paste0(fun_name, ".Rd"))
