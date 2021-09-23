@@ -15,7 +15,7 @@ read_docstring <- function(fun, fun_name = as.character(substitute(fun)),
     # to put this above a generated function to be valid roxygen
     # style comments
     values <- capture.output(print(fun))
-    roxy_ids <- grepl("^[[:space:]]*#\'", values)
+    roxy_ids <- grepl("^[[:space:]]*#+\'", values)
     
     if(!any(roxy_ids)){
         if(error){
@@ -28,6 +28,7 @@ read_docstring <- function(fun, fun_name = as.character(substitute(fun)),
     
     roxy_strings <- values[roxy_ids]
     roxy_strings <- gsub("^[[:space:]]*", "", roxy_strings)
+    roxy_strings <- gsub("^(#)\\1+", "\\1", roxy_strings) # remove extra #s
     
     blanks <- grepl("^[[:space:]]*#\'[[:space:]]*$", values)
     keywords <- grepl("^[[:space:]]*#\'[[:space:]]*@", values)
